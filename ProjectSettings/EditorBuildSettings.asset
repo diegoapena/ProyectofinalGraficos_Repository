@@ -9,14 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: c905284dd31fe924095d26761b09bcb9
   - enabled: 1
-    path: Assets/Scenes/MainLevels.unity
-    guid: 0475d843a999342488c76f2a48cf860f
-  - enabled: 1
-    path: Assets/Scenes/MechanicsTest.unity
-    guid: 66ff5d627b092344d9e916758e577612
-  - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/CityWorld.unity
+    guid: ec955a4c2df0f4f4883c050a86f51beb
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -14,19 +14,14 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private Button optionsButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private Button backButton;
-    [SerializeField] private Button toonButton;
-    [SerializeField] private Button realisticButton;
-
-    [Header("Style")]
-    [SerializeField] private Image toonButtonBackground;
-    [SerializeField] private Image realisticButtonBackground;
-    [SerializeField] private TMP_Text styleStatus;
-    [SerializeField] private Color selectedColor = new Color(0.10f, 0.66f, 0.68f, 1f);
-    [SerializeField] private Color idleColor = new Color(0.12f, 0.13f, 0.18f, 0.95f);
 
     [Header("Sensitivity")]
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private TMP_Text sensitivityValue;
+
+    [Header("Volume")]
+    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private TMP_Text volumeValue;
 
     private void Awake()
     {
@@ -38,8 +33,6 @@ public class MainMenuController : MonoBehaviour
         optionsButton?.onClick.AddListener(OpenOptions);
         quitButton?.onClick.AddListener(QuitGame);
         backButton?.onClick.AddListener(BackToMain);
-        toonButton?.onClick.AddListener(SelectToon);
-        realisticButton?.onClick.AddListener(SelectRealistic);
 
         if (sensitivitySlider != null)
         {
@@ -49,33 +42,28 @@ public class MainMenuController : MonoBehaviour
             sensitivitySlider.onValueChanged.AddListener(HandleSensitivityChanged);
         }
 
+        if (volumeSlider != null)
+        {
+            volumeSlider.minValue = 0f;
+            volumeSlider.maxValue = 1f;
+            volumeSlider.SetValueWithoutNotify(PlayerPrefs.GetFloat("MasterVolume", 1f));
+            volumeSlider.onValueChanged.AddListener(HandleVolumeChanged);
+        }
+
         HandleSensitivityChanged(PlayerPrefs.GetFloat("MouseSensitivity", 0.12f));
+        HandleVolumeChanged(PlayerPrefs.GetFloat("MasterVolume", 1f));
         ShowMain();
-        RefreshStyleUI();
-    }
-
-    private void OnEnable()
-    {
-        if (VisualStyleManager.Instance != null)
-            VisualStyleManager.Instance.StyleChanged += HandleStyleChanged;
-    }
-
-    private void OnDisable()
-    {
-        if (VisualStyleManager.Instance != null)
-            VisualStyleManager.Instance.StyleChanged -= HandleStyleChanged;
     }
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("MainLevels");
+        SceneManager.LoadScene("CityWorld");
     }
 
     public void OpenOptions()
     {
         if (mainPanel != null) mainPanel.SetActive(false);
         if (optionsPanel != null) optionsPanel.SetActive(true);
-        RefreshStyleUI();
     }
 
     public void BackToMain()
@@ -92,43 +80,10 @@ public class MainMenuController : MonoBehaviour
 #endif
     }
 
-    public void SelectToon()
-    {
-        VisualStyleManager.Instance?.SetStyle(VisualStyle.Toon);
-        RefreshStyleUI();
-    }
-
-    public void SelectRealistic()
-    {
-        VisualStyleManager.Instance?.SetStyle(VisualStyle.Realistic);
-        RefreshStyleUI();
-    }
-
     private void ShowMain()
     {
         if (mainPanel != null) mainPanel.SetActive(true);
         if (optionsPanel != null) optionsPanel.SetActive(false);
-    }
-
-    private void HandleStyleChanged(VisualStyle style)
-    {
-        RefreshStyleUI();
-    }
-
-    private void RefreshStyleUI()
-    {
-        VisualStyle current = VisualStyleManager.Instance != null
-            ? VisualStyleManager.Instance.CurrentStyle
-            : (VisualStyle)PlayerPrefs.GetInt("VisualStyle", (int)VisualStyle.Toon);
-
-        if (toonButtonBackground != null)
-            toonButtonBackground.color = current == VisualStyle.Toon ? selectedColor : idleColor;
-
-        if (realisticButtonBackground != null)
-            realisticButtonBackground.color = current == VisualStyle.Realistic ? selectedColor : idleColor;
-
-        if (styleStatus != null)
-            styleStatus.text = current == VisualStyle.Toon ? "Estilo actual: Toon (Cel Shading)" : "Estilo actual: Realista (PBR)";
     }
 
     private void HandleSensitivityChanged(float value)
@@ -138,5 +93,15 @@ public class MainMenuController : MonoBehaviour
 
         if (sensitivityValue != null)
             sensitivityValue.text = value.ToString("0.00");
+    }
+
+    private void HandleVolumeChanged(float value)
+    {
+        PlayerPrefs.SetFloat("MasterVolume", value);
+        PlayerPrefs.Save();
+        AudioListener.volume = value;
+
+        if (volumeValue != null)
+            volumeValue.text = Mathf.RoundToInt(value * 100f) + "%";
     }
 }

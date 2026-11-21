@@ -1,0 +1,9 @@
+Coloca aquí tus clips de música. El MusicManager los cargará automáticamente por nombre (sin extensión).
+
+Nombres esperados:
+- MenuMusic   -> música del menú principal
+- DayMusic    -> música durante el día (en la ciudad)
+- NightMusic  -> música durante la noche (en la ciudad)
+
+Formatos soportados por Unity: .wav, .mp3, .ogg, .aiff, etc.
+Puedes cambiar las rutas en el script MusicManager (Assets/Scripts/Core/MusicManager.cs).

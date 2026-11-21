@@ -63,7 +63,7 @@ public class PauseMenu : MonoBehaviour
     public void RestartLevel()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainLevels");
+        SceneManager.LoadScene("CityWorld");
     }
 
     public void GoToMenu()

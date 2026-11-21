@@ -181,7 +181,7 @@ public class GameplayHUD : MonoBehaviour
     public void RestartLevel()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainLevels");
+        SceneManager.LoadScene("CityWorld");
     }
 
     private void OnDestroy()
